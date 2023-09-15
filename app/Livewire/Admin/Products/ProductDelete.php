@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Admin\Products;
+namespace App\Livewire\Admin\Products;
 
 use App\Models\Product;
 use Livewire\Component;
@@ -16,14 +16,14 @@ class ProductDelete extends Component
 
     public function productConfirmDelete()
     {
-        $this->dispatchBrowserEvent('sweet:open', ['id' => $this->product]);
+        $this->dispatch('sweet:open', ['id' => $this->product]);
     }
 
     public function productDelete($product)
     {
         if($product = Product::find($product)) {
            $product->delete();
-           $this->emit('productDeleted');
+           $this->dispatch('productDeleted');
         }
     }
 

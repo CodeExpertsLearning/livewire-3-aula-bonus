@@ -20,7 +20,7 @@ Route::get('/', function () {
 Route::middleware('auth')
     ->prefix('admin')
     ->name('admin.')
-    ->namespace('App\Http\Livewire\Admin\Products')
+    ->namespace('App\Livewire\Admin\Products')
     ->group(function() {
 
     Route::get('/products', ProductList::class)->name('product.index');

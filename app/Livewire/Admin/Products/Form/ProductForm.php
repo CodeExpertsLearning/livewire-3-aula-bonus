@@ -1,16 +1,21 @@
 <?php
 
-namespace App\Http\Livewire\Admin\Products;
+namespace App\Livewire\Admin\Products\Form;
 
+use App\Models\Category;
 use App\Models\Product;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
-class ProductEdit extends Component
+class ProductForm extends Component
 {
     use WithFileUploads;
 
     public Product $product;
+    public $categories = [];
+
+    public $allCategories;
+
     public $photo;
 
     protected $rules = [
@@ -20,23 +25,28 @@ class ProductEdit extends Component
         'product.price' => 'required',
         'photo' => 'nullable|image'
     ];
-    public function mount(Product $product)
+    public function mount(Product $product, Category $category)
     {
-       $this->product = $product;
+        $this->product = $product;
+        $this->categories = $this->product->categories->pluck('id')->toArray();
+        $this->categories = array_fill_keys($this->categories, 1);
+        $this->allCategories = $category->pluck('name', 'id')->toArray();
+
     }
 
-    public function updateProduct()
+    public function syncProduct()
     {
         $this->validate();
 
         $this->product->photo = $this->photo?->store('products', 'public') ?? $this->product->photo;
-
         $this->product->save();
+        $this->product->categories()->sync(array_keys($this->categories, 1));
 
         redirect()->route('admin.product.index');
     }
+
     public function render()
     {
-        return view('livewire.admin.products.product-edit');
+        return view('livewire.admin.products.form.product-form');
     }
 }

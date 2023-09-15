@@ -20,7 +20,7 @@
                 <form class="w-full flex justify-between px-5 my-10">
                     <div>
                         <label>Por Página</label>
-                        <select wire:model="perPage" class="rounded" >
+                        <select wire:model.live="perPage" class="rounded" >
                             <option value="15">15</option>
                             <option value="20">20</option>
                             <option value="all">Todos</option>
@@ -29,7 +29,7 @@
 
                     <div>
                         <label>Buscar</label>
-                        <input type="text" wire:model="search" class="rounded" placeholder="Buscar na tabela...">
+                        <input type="text" wire:model.live="search" class="rounded" placeholder="Buscar na tabela...">
                     </div>
                 </form>
                 <table class="w-full">
@@ -78,7 +78,7 @@
     @push('scripts')
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
-          window.addEventListener('livewire:load', event => {
+          window.addEventListener('livewire:init', event => {
               window.addEventListener('sweet:open', event => {
                   Swal.fire({
                       title: 'Atenção!!',
