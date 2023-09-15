@@ -11,8 +11,8 @@
                     <form action="" enctype="multipart/form-data">
                         <div class="w-full mb-6">
                             <label class="w-full mb-4">Nome Produto</label>
-                            <input type="text" wire:model="product.name" class="w-full rounded ">
-                            @error('product.name')
+                            <input type="text" wire:model="form.name" class="w-full rounded ">
+                            @error('form.name')
                             <div class="w-full p-4 mt-4 rounded border border-red-900 bg-red-400 text-white font-bold">
                                 {{$message}}
                             </div>
@@ -21,8 +21,8 @@
 
                         <div  class="w-full mb-6">
                             <label class="w-full mb-4">Descrição</label>
-                            <input type="text" wire:model="product.description" class="w-full rounded ">
-                            @error('product.description')
+                            <input type="text" wire:model="form.description" class="w-full rounded ">
+                            @error('form.description')
                             <div class="w-full p-4 mt-4 rounded border border-red-900 bg-red-400 text-white font-bold">
                                 {{$message}}
                             </div>
@@ -31,8 +31,8 @@
 
                         <div class="w-full mb-6">
                             <label class="w-full mb-4">Conteúdo</label>
-                            <textarea id="" cols="30" rows="10" wire:model="product.body" class="w-full rounded "></textarea>
-                            @error('product.body')
+                            <textarea id="" cols="30" rows="10" wire:model="form.body" class="w-full rounded "></textarea>
+                            @error('form.body')
                             <div class="w-full p-4 mt-4 rounded border border-red-900 bg-red-400 text-white font-bold">
                                 {{$message}}
                             </div>
@@ -41,8 +41,8 @@
 
                         <div class="w-full mb-6">
                             <label class="w-full mb-4">Preço</label>
-                            <input type="text" wire:model="product.price" class="w-full rounded ">
-                            @error('product.price')
+                            <input type="text" wire:model="form.price" class="w-full rounded ">
+                            @error('form.price')
                             <div class="w-full p-4 mt-4 rounded border border-red-900 bg-red-400 text-white font-bold">
                                 {{$message}}
                             </div>
@@ -53,8 +53,8 @@
                             <div class="w-1/2 p-2">
                                 @if($photo)
                                     <img src="{{$photo->temporaryUrl()}}" alt="">
-{{--                                @elseif($product->photo)--}}
-{{--                                    <img src="{{asset('storage/' . $product->photo)}}" alt="">--}}
+                                @elseif($form->getPhoto())
+                                    <img src="{{asset('storage/' . $form->getPhoto())}}" alt="">
                                 @endif
                             </div>
 
@@ -62,7 +62,7 @@
                                 <label class="w-full mb-4">Foto Produto</label>
 
                                 <input type="file" wire:model="photo" class="w-full rounded border border-gray-400 p-2">
-                                @error('product.photo')
+                                @error('photo')
                                 <div class="w-full p-4 mt-4 rounded border border-red-900 bg-red-400 text-white font-bold">
                                     {{$message}}
                                 </div>

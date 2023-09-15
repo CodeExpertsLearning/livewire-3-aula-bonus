@@ -29,15 +29,7 @@ class ProductForm extends Form
     #[Locked]
     protected array $insideCategories;
 
-    public function setPhoto(?string $photoReference)
-    {
-        $this->photo = $photoReference;
-    }
-
-    public function setCategories(?array $categories)
-    {
-        $this->insideCategories = $categories?? [];
-    }
+    protected $update = false;
 
     public function setProduct(Product $product)
     {
@@ -46,6 +38,30 @@ class ProductForm extends Form
         $this->description = $product->description;
         $this->body = $product->body;
         $this->price = $product->price;
+        $this->photo = $product->photo;
+    }
+
+    public function setUpdate(bool $update): void
+    {
+        $this->update = $update;
+    }
+
+    public function setPhoto(?string $photoReference)
+    {
+        $this->photo = $photoReference;
+    }
+
+    public function getPhoto(): ?string
+    {
+        if($this->update)
+            return $this->product?->photo;
+
+        return null;
+    }
+
+    public function setCategories(?array $categories)
+    {
+        $this->insideCategories = $categories?? [];
     }
 
     public function store()
@@ -55,13 +71,17 @@ class ProductForm extends Form
         $data = $this->except(['product']);
 
         $product = Product::create($data);
-        $product->categories()->sync(array_keys($this->insideCategories, 1));
+        $product->categories()->sync(array_keys($this->insideCategories, true));
     }
 
     public function update()
     {
-        $this->post->update(
+        $this->product->photo = $this->photo ?? $this->product->photo;
 
+        $this->product->update(
+            $this->except(['product'])
         );
+
+        $this->product->categories()->sync(array_keys($this->insideCategories, true));
     }
 }

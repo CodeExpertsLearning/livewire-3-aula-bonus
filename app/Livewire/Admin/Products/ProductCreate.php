@@ -13,7 +13,7 @@ class ProductCreate extends Component
 {
     use WithFileUploads;
 
-    public ProductForm $product;
+    public ProductForm $form;
 
     #[Rule('nullable|image')]
     public $photo;
@@ -32,10 +32,10 @@ class ProductCreate extends Component
     {
         $photo = $this->photo?->store('products', 'public');
 
-        $this->product->setPhoto($photo);
-        $this->product->setCategories($this->categories);
+        $this->form->setPhoto($photo);
+        $this->form->setCategories($this->categories);
 
-        $this->product->store();
+        $this->form->store();
 
         session()->flash('success', 'Produto criado com sucesso!');
     }

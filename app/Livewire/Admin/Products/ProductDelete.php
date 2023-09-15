@@ -16,7 +16,7 @@ class ProductDelete extends Component
 
     public function productConfirmDelete()
     {
-        $this->dispatch('sweet:open', ['id' => $this->product]);
+        $this->dispatch('sweet:open', id: $this->product);
     }
 
     public function productDelete($product)
@@ -27,7 +27,7 @@ class ProductDelete extends Component
         }
     }
 
-    protected function getListeners()
+    protected function getListeners(): array
     {
         return [
           'productDelete:' . $this->product => 'productDelete'
