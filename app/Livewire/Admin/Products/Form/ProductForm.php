@@ -4,19 +4,13 @@ namespace App\Livewire\Admin\Products\Form;
 
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Database\Eloquent\Model;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
 class ProductForm extends Component
 {
     use WithFileUploads;
-
-    public Product $product;
-    public $categories = [];
-
-    public $allCategories;
-
-    public $photo;
 
     protected $rules = [
         'product.name' => 'required',
@@ -25,13 +19,12 @@ class ProductForm extends Component
         'product.price' => 'required',
         'photo' => 'nullable|image'
     ];
-    public function mount(Product $product, Category $category)
+    public function mount(Category $category, ?int $product = null)
     {
-        $this->product = $product;
+        $this->product = is_null($product) ? new Product() : Product::find($product);
         $this->categories = $this->product->categories->pluck('id')->toArray();
         $this->categories = array_fill_keys($this->categories, 1);
         $this->allCategories = $category->pluck('name', 'id')->toArray();
-
     }
 
     public function syncProduct()

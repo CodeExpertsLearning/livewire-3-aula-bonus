@@ -2,7 +2,10 @@
 
 namespace App\Livewire\Admin\Products;
 
+use App\Livewire\Forms\ProductForm;
+use App\Models\Category;
 use App\Models\Product;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -10,38 +13,35 @@ class ProductCreate extends Component
 {
     use WithFileUploads;
 
-    public $product = [
-        'name' => null,
-        'body' => null,
-        'description' => null,
-        'price' => null,
-        'photo' => null
-    ];
+    public ProductForm $product;
 
-    protected $rules = [
-        'product.name' => 'required',
-        'product.description' => 'required',
-        'product.body' => 'required',
-        'product.price' => 'required',
-        'product.photo' => 'nullable|image'
-    ];
+    #[Rule('nullable|image')]
+    public $photo;
 
-    public function saveProduct()
+    public $allCategories;
+
+    #[Rule('nullable|array')]
+    public $categories = [];
+
+    public function mount(Category $category)
     {
-        $this->validate();
+        $this->allCategories = $category->pluck('name', 'id')->toArray();
+    }
 
-        $this->product['slug'] = str()->slug($this->product['name']);
-        $this->product['photo'] = $this->product['photo']?->store('products', 'public');
+    public function syncProduct()
+    {
+        $photo = $this->photo?->store('products', 'public');
 
-        Product::create($this->product);
+        $this->product->setPhoto($photo);
+        $this->product->setCategories($this->categories);
 
-        $this->reset('product');
+        $this->product->store();
 
         session()->flash('success', 'Produto criado com sucesso!');
     }
 
     public function render()
     {
-        return view('livewire.admin.products.product-create');
+        return view('livewire.admin.products.form.product-form');
     }
 }
