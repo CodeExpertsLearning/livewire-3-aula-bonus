@@ -15,9 +15,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::name('store.')
+    ->namespace('App\Livewire\Store')
+    ->group(function() {
+        Route::get('/', Home::class)->name('home');
+        Route::get('/cart', Cart\CartIndex::class)->name('cart');
+        Route::get('/checkout', Checkout::class)
+            ->middleware('auth')
+            ->name('checkout');
+    });
 
 Route::middleware('auth')
     ->prefix('admin')
